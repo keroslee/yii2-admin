@@ -44,7 +44,7 @@ class Login extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, Yii::t('rbac-admin', 'Incorrect username or password.'));
             }
         }
     }
@@ -71,7 +71,7 @@ class Login extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = User::findByUserName($this->username);
         }
 
         return $this->_user;

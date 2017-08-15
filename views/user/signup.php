@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use backend\components\Helper;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -17,9 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
-                <?= $form->field($model, 'username') ?>
-                <?= $form->field($model, 'email') ?>
-                <?= $form->field($model, 'password')->passwordInput() ?>
+                <?= $form->field($model, 'user_name') ?>
+                <?= $form->field($model, 'user_email') ?>
+                <?= $form->field($model, 'user_tel') ?>
+                <?= $form->field($model, 'user_passwd')->passwordInput() ?>
+                <?= $form->field($model, 'shop_id')->dropDownList(Helper::shopMap()) ?>
                 <div class="form-group">
                     <?= Html::submitButton(Yii::t('rbac-admin', 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>

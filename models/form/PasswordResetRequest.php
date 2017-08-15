@@ -23,7 +23,7 @@ class PasswordResetRequest extends Model
             ['email', 'email'],
             ['email', 'exist',
                 'targetClass' => 'mdm\admin\models\User',
-                'filter' => ['status' => User::STATUS_ACTIVE],
+                'filter' => ['user_status' => User::STATUS_ACTIVE],
                 'message' => 'There is no user with such email.'
             ],
         ];
@@ -38,8 +38,8 @@ class PasswordResetRequest extends Model
     {
         /* @var $user User */
         $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
-            'email' => $this->email,
+            'user_status' => User::STATUS_ACTIVE,
+            'user_email' => $this->email,
         ]);
 
         if ($user) {

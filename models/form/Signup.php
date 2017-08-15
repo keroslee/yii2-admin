@@ -1,7 +1,6 @@
 <?php
 namespace mdm\admin\models\form;
 
-use Yii;
 use mdm\admin\models\User;
 use yii\base\Model;
 
@@ -10,9 +9,11 @@ use yii\base\Model;
  */
 class Signup extends Model
 {
-    public $username;
-    public $email;
-    public $password;
+    public $user_name;
+    public $user_email;
+    public $user_tel;
+    public $shop_id;
+    public $user_passwd;
 
     /**
      * @inheritdoc
@@ -20,18 +21,26 @@ class Signup extends Model
     public function rules()
     {
         return [
-            ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['user_name', 'filter', 'filter' => 'trim'],
+            ['user_name', 'required'],
+            ['user_name', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This user name has already been taken.'],
+            ['user_name', 'string', 'min' => 2, 'max' => 255],
 
-            ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This email address has already been taken.'],
+            ['user_email', 'filter', 'filter' => 'trim'],
+            ['user_email', 'required'],
+            ['user_email', 'email'],
+            ['user_email', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This user email address has already been taken.'],
+        		
+        	['user_tel', 'filter', 'filter' => 'trim'],
+        	['user_tel', 'required'],
+        	['user_tel', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This user tel has already been taken.'],
+        	['user_tel', 'string', 'min' => 11],
 
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['user_passwd', 'required'],
+            ['user_passwd', 'string', 'min' => 6],
+        		
+        	['shop_id', 'filter', 'filter' => 'trim'],
+        	['shop_id', 'required'],
         ];
     }
 
@@ -44,9 +53,11 @@ class Signup extends Model
     {
         if ($this->validate()) {
             $user = new User();
-            $user->username = $this->username;
-            $user->email = $this->email;
-            $user->setPassword($this->password);
+            $user->user_name = $this->user_name;
+            $user->user_email = $this->user_email;
+            $user->user_tel = $this->user_tel;
+            $user->shop_id = $this->shop_id;
+            $user->setPassword($this->user_passwd);
             $user->generateAuthKey();
             if ($user->save()) {
                 return $user;

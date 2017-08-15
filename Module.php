@@ -102,7 +102,7 @@ class Module extends \yii\base\Module
         //user did not define the Navbar?
         if ($this->navbar === null && Yii::$app instanceof \yii\web\Application) {
             $this->navbar = [
-                ['label' => Yii::t('rbac-admin', 'Help'), 'url' => ['default/index']],
+                //['label' => Yii::t('rbac-admin', 'Help'), 'url' => ['default/index']],
                 ['label' => Yii::t('rbac-admin', 'Application'), 'url' => Yii::$app->homeUrl]
             ];
         }

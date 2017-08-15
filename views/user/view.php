@@ -7,7 +7,7 @@ use mdm\admin\components\Helper;
 /* @var $this yii\web\View */
 /* @var $model mdm\admin\models\User */
 
-$this->title = $model->username;
+$this->title = $model->user_name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('rbac-admin', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -19,8 +19,8 @@ $controllerId = $this->context->uniqueId . '/';
 
     <p>
         <?php
-        if ($model->status == 0 && Helper::checkRoute($controllerId . 'activate')) {
-            echo Html::a(Yii::t('rbac-admin', 'Activate'), ['activate', 'id' => $model->id], [
+        if ($model->user_status == 0 && Helper::checkRoute($controllerId . 'activate')) {
+            echo Html::a(Yii::t('rbac-admin', 'Activate'), ['activate', 'id' => $model->user_id], [
                 'class' => 'btn btn-primary',
                 'data' => [
                     'confirm' => Yii::t('rbac-admin', 'Are you sure you want to activate this user?'),
@@ -31,7 +31,7 @@ $controllerId = $this->context->uniqueId . '/';
         ?>
         <?php
         if (Helper::checkRoute($controllerId . 'delete')) {
-            echo Html::a(Yii::t('rbac-admin', 'Delete'), ['delete', 'id' => $model->id], [
+            echo Html::a(Yii::t('rbac-admin', 'Delete'), ['delete', 'id' => $model->user_id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
@@ -46,10 +46,13 @@ $controllerId = $this->context->uniqueId . '/';
     DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'username',
-            'email:email',
-            'created_at:date',
-            'status',
+            'user_name',
+            'user_email:email',
+        	'user_tel',
+        	'shop_id',
+        	'user_updated:date',
+        	'user_created:date',
+            'user_status',
         ],
     ])
     ?>

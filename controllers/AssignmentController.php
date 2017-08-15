@@ -18,8 +18,8 @@ use yii\filters\VerbFilter;
 class AssignmentController extends Controller
 {
     public $userClassName;
-    public $idField = 'id';
-    public $usernameField = 'username';
+    public $idField = 'user_id';
+    public $usernameField = 'user_name';
     public $fullnameField;
     public $searchClass;
     public $extraColumns = [];

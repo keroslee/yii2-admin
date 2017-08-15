@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use mdm\admin\components\Helper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel mdm\admin\models\searchs\User */
@@ -14,6 +13,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    
+    <p>
+        <?= Html::a(Yii::t('rbac-admin', 'Signup'), ['signup'], ['class' => 'btn btn-success']) ?>
+    </p>
 
     <?=
     GridView::widget([
@@ -21,13 +24,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'username',
-            'email:email',
-            'created_at:date',
+            'user_name',
+            'user_email:email',
+            'user_created:date',
             [
-                'attribute' => 'status',
+                'attribute' => 'user_status',
                 'value' => function($model) {
-                    return $model->status == 0 ? 'Inactive' : 'Active';
+                    return $model->user_status == 0 ? 'Inactive' : 'Active';
                 },
                 'filter' => [
                     0 => 'Inactive',
@@ -36,10 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
+               // 'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
                 'buttons' => [
                     'activate' => function($url, $model) {
-                        if ($model->status == 10) {
+                        if ($model->user_status == 10) {
                             return '';
                         }
                         $options = [

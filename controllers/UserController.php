@@ -14,7 +14,6 @@ use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\base\UserException;
 use yii\mail\BaseMailer;
@@ -51,7 +50,7 @@ class UserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
-                    'logout' => ['post'],
+                    'logout' => ['get'],
                     'activate' => ['post'],
                 ],
             ],
@@ -93,11 +92,39 @@ class UserController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
         ]);
+    }
+    
+    /**
+     * Updates an existing User model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+    	$model = $this->findModel($id);
+    	$oldPasswd=$model->user_passwd_hash;
+    	//
+    	if ($model->load(Yii::$app->request->post()) ) {
+    		//check passwd
+    		$newPass=Yii::$app->request->post('User')['user_passwd_hash'];    		
+    		if($oldPasswd!=$newPass){
+    			$model->generateAuthKey();
+    			$model->setPassword($newPass);
+    		}
+    		if($model->save()){
+    			return $this->redirect(['index']);
+    		}    		
+    		//return $this->redirect(['view', 'id' => $model->user_id]);
+    	} else {
+    		return $this->render('update', [
+    				'model' => $model,
+    		]);
+    	}
     }
 
     /**
@@ -139,6 +166,7 @@ class UserController extends Controller
         if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
             return $this->goBack();
         } else {
+            $this->layout = 'none';
             return $this->render('login', [
                     'model' => $model,
             ]);
@@ -157,7 +185,7 @@ class UserController extends Controller
     }
 
     /**
-     * Signup new user
+     * Create new user
      * @return string
      */
     public function actionSignup()
@@ -165,7 +193,8 @@ class UserController extends Controller
         $model = new Signup();
         if ($model->load(Yii::$app->getRequest()->post())) {
             if ($user = $model->signup()) {
-                return $this->goHome();
+                //return $this->goHome();
+            	return $this->redirect(['index']);
             }
         }
 
@@ -246,8 +275,8 @@ class UserController extends Controller
     {
         /* @var $user User */
         $user = $this->findModel($id);
-        if ($user->status == User::STATUS_INACTIVE) {
-            $user->status = User::STATUS_ACTIVE;
+        if ($user->user_status == User::STATUS_INACTIVE) {
+            $user->user_status = User::STATUS_ACTIVE;
             if ($user->save()) {
                 return $this->goHome();
             } else {
