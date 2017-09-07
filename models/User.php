@@ -11,20 +11,20 @@ use yii\web\IdentityInterface;
 /**
  * User model
  *
- * @property integer $user_id
- * @property string $user_name
- * @property string $user_passwd_hash
- * @property string $user_passwd_token
- * @property string $user_email
- * @property string $user_tel
+ * @property integer $id
+ * @property string $name
+ * @property string $password_hash
+ * @property string $password_token
+ * @property string $email
+ * @property string $tel
  * @property string $shop_id
- * @property string $user_auth_key
- * @property integer $user_status
- * @property integer $user_created
- * @property integer $user_updated
+ * @property string $auth_key
+ * @property integer $status
+ * @property integer $created_at
+ * @property integer $updated_at
  * @property string $password write-only password
- * @property string $user_type
- * @property string $user_role_type
+ * @property string $type
+ * @property string $role_type
  *
  * @property UserProfile $profile
  */
@@ -47,8 +47,8 @@ class User extends ActiveRecord implements IdentityInterface {
         return [
             [
                 'class' => TimestampBehavior::className(),
-                'createdAtAttribute' => 'user_created',
-                'updatedAtAttribute' => 'user_updated',
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
             ],
         ];
     }
@@ -58,14 +58,14 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function rules() {
         return [
-            [['user_name', 'user_auth_key', 'user_passwd_hash', 'user_email', 'user_tel'], 'required'],
-            [['user_tel', 'shop_id', 'user_status', 'user_created', 'user_updated'], 'integer'],
-            [['user_name', 'user_passwd_hash', 'user_passwd_token', 'user_email'], 'string', 'max' => 255],
-            [['user_auth_key', 'user_role_type','user_type'], 'string', 'max' => 32],
-            [['user_name'], 'unique'],
-            [['user_email'], 'unique'],
-            [['user_tel'], 'unique'],
-            [['user_passwd_token'], 'unique'],
+            [['name', 'auth_key', 'password_hash', 'email', 'tel'], 'required'],
+            [['tel', 'shop_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['name', 'password_hash', 'password_token', 'email'], 'string', 'max' => 255],
+            [['auth_key', 'role_type','type'], 'string', 'max' => 32],
+            [['name'], 'unique'],
+            [['email'], 'unique'],
+            [['tel'], 'unique'],
+            [['password_token'], 'unique'],
         ];
     }
 
@@ -74,19 +74,19 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function attributeLabels() {
         return [
-            'user_id' => 'User ID',
-            'user_name' => 'User Name',
-            'user_auth_key' => 'User Auth Key',
-            'user_passwd_hash' => 'User Passwd Hash',
-            'user_passwd_token' => 'User Passwd Token',
-            'user_email' => 'User Email',
+            'id' => 'User ID',
+            'name' => 'User Name',
+            'auth_key' => 'User Auth Key',
+            'password_hash' => 'User Passwd Hash',
+            'password_token' => 'User Passwd Token',
+            'email' => 'User Email',
             'shop_id' => 'Shop ID',
-            'user_tel' => 'User Tel',
-            'user_status' => 'User Status',
-            'user_created' => 'User Created',
-            'user_updated' => 'User Updated',
-            'user_type' => 'User Type',
-            'user_role_type' => 'User Role Type',
+            'tel' => 'User Tel',
+            'status' => 'User Status',
+            'created_at' => 'User Created',
+            'updated_at' => 'User Updated',
+            'type' => 'User Type',
+            'role_type' => 'User Role Type',
         ];
     }
 
@@ -94,7 +94,7 @@ class User extends ActiveRecord implements IdentityInterface {
      * @inheritdoc
      */
     public static function findIdentity($id) {
-        return static::findOne(['user_id' => $id, 'user_status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -115,7 +115,7 @@ class User extends ActiveRecord implements IdentityInterface {
      * @inheritdoc
      */
     public function getAuthKey() {
-        return $this->user_auth_key;
+        return $this->auth_key;
     }
 
     /**
@@ -126,13 +126,13 @@ class User extends ActiveRecord implements IdentityInterface {
     }
 
     /**
-     * Finds user by user_name
+     * Finds user by name
      *
      * @param string $userName
      * @return static|null
      */
     public static function findByUserName($userName) {
-        return static::findOne(['user_name' => $userName, 'user_status' => self::STATUS_ACTIVE]);
+        return static::findOne(['name' => $userName, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -147,8 +147,8 @@ class User extends ActiveRecord implements IdentityInterface {
         }
 
         return static::findOne([
-                    'user_passwd_token' => $token,
-                    'user_status' => self::STATUS_ACTIVE,
+                    'password_token' => $token,
+                    'status' => self::STATUS_ACTIVE,
         ]);
     }
 
@@ -169,13 +169,13 @@ class User extends ActiveRecord implements IdentityInterface {
     }
 
     /**
-     * Validates user_passwd_hash
+     * Validates password_hash
      *
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
     public function validatePassword($password) {
-        return Yii::$app->security->validatePassword($password, $this->user_passwd_hash);
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
     /**
@@ -184,28 +184,28 @@ class User extends ActiveRecord implements IdentityInterface {
      * @param string $password
      */
     public function setPassword($password) {
-        $this->user_passwd_hash = Yii::$app->security->generatePasswordHash($password);
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
      * Generates "remember me" authentication key
      */
     public function generateAuthKey() {
-        $this->user_auth_key = Yii::$app->security->generateRandomString();
+        $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
      * Generates new password reset token
      */
     public function generatePasswordToken() {
-        $this->user_passwd_token = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->password_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
      * Removes password reset token
      */
     public function removePasswordToken() {
-        $this->user_passwd_token = null;
+        $this->password_token = null;
     }
 
 }
