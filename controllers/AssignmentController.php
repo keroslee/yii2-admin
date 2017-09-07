@@ -19,7 +19,7 @@ class AssignmentController extends Controller
 {
     public $userClassName;
     public $idField = 'user_id';
-    public $usernameField = 'user_name';
+    public $usernameField = 'name';
     public $fullnameField;
     public $searchClass;
     public $extraColumns = [];
