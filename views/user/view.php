@@ -19,7 +19,7 @@ $controllerId = $this->context->uniqueId . '/';
 
     <p>
         <?php
-        if ($model->user_status == 0 && Helper::checkRoute($controllerId . 'activate')) {
+        if ($model->status == 0 && Helper::checkRoute($controllerId . 'activate')) {
             echo Html::a(Yii::t('rbac-admin', 'Activate'), ['activate', 'id' => $model->user_id], [
                 'class' => 'btn btn-primary',
                 'data' => [
@@ -47,12 +47,12 @@ $controllerId = $this->context->uniqueId . '/';
         'model' => $model,
         'attributes' => [
             'user_name',
-            'user_email:email',
-        	'user_tel',
+            'email:email',
+        	'tel',
         	'shop_id',
-        	'user_updated:date',
-        	'user_created:date',
-            'user_status',
+        	'updated_at:date',
+        	'created_at:date',
+            'status',
         ],
     ])
     ?>

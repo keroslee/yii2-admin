@@ -25,12 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'user_name',
-            'user_email:email',
-            'user_created:date',
+            'email:email',
+            'created_at:date',
             [
-                'attribute' => 'user_status',
+                'attribute' => 'status',
                 'value' => function($model) {
-                    return $model->user_status == 0 ? 'Inactive' : 'Active';
+                    return $model->status == 0 ? 'Inactive' : 'Active';
                 },
                 'filter' => [
                     0 => 'Inactive',
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                // 'template' => Helper::filterActionColumn(['view', 'activate', 'delete']),
                 'buttons' => [
                     'activate' => function($url, $model) {
-                        if ($model->user_status == 10) {
+                        if ($model->status == 10) {
                             return '';
                         }
                         $options = [

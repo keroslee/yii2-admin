@@ -19,8 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
                 <?= $form->field($model, 'user_name') ?>
-                <?= $form->field($model, 'user_email') ?>
-                <?= $form->field($model, 'user_tel') ?>
+                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'tel') ?>
                 <?= $form->field($model, 'user_passwd')->passwordInput() ?>
                 <?= $form->field($model, 'shop_id')->dropDownList(Helper::shopMap()) ?>
                 <div class="form-group">

@@ -26,15 +26,15 @@ class Signup extends Model
             ['user_name', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This user name has already been taken.'],
             ['user_name', 'string', 'min' => 2, 'max' => 255],
 
-            ['user_email', 'filter', 'filter' => 'trim'],
-            ['user_email', 'required'],
-            ['user_email', 'email'],
-            ['user_email', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This user email address has already been taken.'],
+            ['email', 'filter', 'filter' => 'trim'],
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This user email address has already been taken.'],
         		
-        	['user_tel', 'filter', 'filter' => 'trim'],
-        	['user_tel', 'required'],
-        	['user_tel', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This user tel has already been taken.'],
-        	['user_tel', 'string', 'min' => 11],
+        	['tel', 'filter', 'filter' => 'trim'],
+        	['tel', 'required'],
+        	['tel', 'unique', 'targetClass' => 'mdm\admin\models\User', 'message' => 'This user tel has already been taken.'],
+        	['tel', 'string', 'min' => 11],
 
             ['user_passwd', 'required'],
             ['user_passwd', 'string', 'min' => 6],
@@ -54,8 +54,8 @@ class Signup extends Model
         if ($this->validate()) {
             $user = new User();
             $user->user_name = $this->user_name;
-            $user->user_email = $this->user_email;
-            $user->user_tel = $this->user_tel;
+            $user->email = $this->email;
+            $user->tel = $this->tel;
             $user->shop_id = $this->shop_id;
             $user->setPassword($this->user_passwd);
             $user->generateAuthKey();

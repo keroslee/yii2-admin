@@ -15,11 +15,11 @@ use backend\components\Helper;
 
     <?= $form->field($model, 'user_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'user_passwd_hash')->textInput(['maxlength' => true])->passwordInput() ?>
+    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true])->passwordInput() ?>
 
-    <?= $form->field($model, 'user_email')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'user_tel')->textInput() ?>
+    <?= $form->field($model, 'tel')->textInput() ?>
     
     <?= $form->field($model, 'shop_id')->dropDownList(Helper::shopMap()) ?>
 

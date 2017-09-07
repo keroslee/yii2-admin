@@ -107,11 +107,11 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
     	$model = $this->findModel($id);
-    	$oldPasswd=$model->user_passwd_hash;
+    	$oldPasswd=$model->password_hash;
     	//
     	if ($model->load(Yii::$app->request->post()) ) {
     		//check passwd
-    		$newPass=Yii::$app->request->post('User')['user_passwd_hash'];    		
+    		$newPass=Yii::$app->request->post('User')['password_hash'];
     		if($oldPasswd!=$newPass){
     			$model->generateAuthKey();
     			$model->setPassword($newPass);
@@ -275,8 +275,8 @@ class UserController extends Controller
     {
         /* @var $user User */
         $user = $this->findModel($id);
-        if ($user->user_status == User::STATUS_INACTIVE) {
-            $user->user_status = User::STATUS_ACTIVE;
+        if ($user->status == User::STATUS_INACTIVE) {
+            $user->status = User::STATUS_ACTIVE;
             if ($user->save()) {
                 return $this->goHome();
             } else {
